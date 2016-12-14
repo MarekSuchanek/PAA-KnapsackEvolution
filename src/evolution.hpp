@@ -17,10 +17,16 @@ private:
     int generation;
     const Knapsack* knapsack;
 
+    const Individual* pickRandom() const;
+    const Individual* pickBest() const;
+
     void selection();
     void reproduction();
     void mutation();
-    bool termination();
+    const Individual* evaluation();
+    bool termination() const;
+
+    void clearPopulation();
 public:
     Evolution(const Knapsack* knapsack);
     ~Evolution();

@@ -33,5 +33,5 @@ int Random::getRandInt(int maxValue){
 }
 
 double Random::getRandProbability(){
-    return (double)rand() / (double)RAND_MAX
+    return (double)rand() / (double)RAND_MAX;
 }
