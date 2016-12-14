@@ -30,10 +30,6 @@ public:
     bool broken() const;
     void repair();
 
-    //TODO: make strategy pattern
-    void mutate();
-    void crossover(const Individual& partner, Individual& targetA, Individual& targetB) const;
-
     bool operator < (const Individual& other) const;
 
     Individual& operator = (const Individual& other);

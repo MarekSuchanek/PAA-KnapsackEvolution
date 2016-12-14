@@ -37,7 +37,7 @@ void Evolution::selection(){
 void Evolution::reproduction(){
     for(int i = 0; i < POPULATION_SIZE; i+=2){
         if(Random::randProbability() < CROSSOVER_P){
-            //TODO: crossover & replace
+            cs->inPlace(population[i], population[i+1]);
         }
     }
 }
@@ -45,7 +45,7 @@ void Evolution::reproduction(){
 void Evolution::mutation(){
     for(int i = 0; i < POPULATION_SIZE; i++){
         if(Random::randProbability() < MUTATION_P){
-            population[i]->mutate();
+            ms->inPlace(population[i]);
         }
     }
 }
@@ -74,7 +74,7 @@ void Evolution::clearPopulation(){
     population = NULL;
 }
 
-Evolution::Evolution(const Knapsack* knapsack):knapsack(knapsack){
+Evolution::Evolution(const Knapsack* knapsack, const CrossoverStrategy* cs, const MutationStrategy* ms):knapsack(knapsack),cs(cs),ms(ms){
     population = new Individual*[POPULATION_SIZE];
     for(int i = 0; i < POPULATION_SIZE; i++){
         population[i] = new Individual(INIT_P, knapsack);
@@ -105,5 +105,6 @@ void Evolution::run(){
             sameBest = 0;
         }
         best = newBest;
+        std::cout << generation << ": " << best->getFitness() << std::endl;
     }
 }

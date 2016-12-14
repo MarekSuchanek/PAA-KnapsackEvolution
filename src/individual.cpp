@@ -11,14 +11,15 @@ Individual::Individual(const Knapsack* k):knapsack(k), chromosome(k->getLength()
 Individual::Individual(bool init, const Knapsack* k):knapsack(k), chromosome(k->getLength()){
     price = weight = 0;
     for(std::vector<bool>::size_type i = 0; i < chromosome.size(); i++)
-        chromosome[i] = init;
+        set(i, init);
 }
 
 Individual::Individual(double probability, const Knapsack* k):knapsack(k), chromosome(k->getLength()){
     price = weight = 0;
     srand(time(NULL));
-    for(std::vector<bool>::size_type i = 0; i < chromosome.size(); i++)
+    for(std::vector<bool>::size_type i = 0; i < chromosome.size(); i++){
         set(i, Random::randProbability() > probability);
+    }
 }
 Individual::Individual(const Individual& other):knapsack(other.knapsack), chromosome(other.chromosome){
     price = other.price;
@@ -37,8 +38,8 @@ void Individual::set(int i, bool value){
         weight -= knapsack->getWeight(i);
         price -= knapsack->getPrice(i);
     }else{
-        weight = knapsack->getWeight(i);
-        price = knapsack->getPrice(i);
+        weight += knapsack->getWeight(i);
+        price += knapsack->getPrice(i);
     }
     chromosome[i] = value;
 }
@@ -56,9 +57,7 @@ int Individual::getWeight() const{
     return weight;
 }
 
-void Individual::mutate(){
-    neg(Random::randInt(size()));
-}
+
 bool Individual::broken() const{
     return weight > knapsack->getCapacity();
 }
@@ -69,18 +68,6 @@ void Individual::repair(){
             point++;
         }
         set(point, false);
-    }
-}
-void Individual::crossover(const Individual& partner, Individual& offspringA, Individual& offspringB) const{
-    int point = Random::randInt(size());
-    int i = 0;
-    for(;i < point; i++){
-        offspringA.set(i, get(i));
-        offspringB.set(i, partner.get(i));
-    }
-    for(;i < size(); i++){
-        offspringA.set(i, partner.get(i));
-        offspringB.set(i, get(i));
     }
 }
 

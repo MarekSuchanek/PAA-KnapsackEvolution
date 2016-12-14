@@ -9,9 +9,9 @@ TARGET=$(BIN)/knapsack
 
 all: $(TARGET)
 
-$(TARGET): $(BUILD)/main.o $(BUILD)/evolution.o $(BUILD)/individual.o $(BUILD)/knapsack.o $(BUILD)/random.o
+$(TARGET): $(BUILD)/main.o $(BUILD)/evolution.o $(BUILD)/individual.o $(BUILD)/knapsack.o $(BUILD)/random.o $(BUILD)/crossover.o $(BUILD)/mutation.o
 	mkdir -p $(BIN)
-	$(LD) -o $@ $(BUILD)/main.o $(BUILD)/evolution.o $(BUILD)/individual.o $(BUILD)/knapsack.o $(BUILD)/random.o
+	$(LD) -o $@ $(BUILD)/main.o $(BUILD)/evolution.o $(BUILD)/individual.o $(BUILD)/knapsack.o $(BUILD)/random.o $(BUILD)/crossover.o $(BUILD)/mutation.o
 
 $(BUILD)/%o: $(SRC)/%cpp
 	mkdir -p $(BUILD)
@@ -20,8 +20,10 @@ $(BUILD)/%o: $(SRC)/%cpp
 clean:
 	rm -rf $(BIN) $(BUILD)
 
-$(BUILD)/evolution.o: $(SRC)/evolution.cpp $(SRC)/evolution.hpp $(SRC)/individual.hpp $(SRC)/knapsack.hpp
+$(BUILD)/crossover.o: $(SRC)/crossover.cpp $(SRC)/crossover.hpp $(SRC)/individual.hpp $(SRC)/knapsack.hpp
+$(BUILD)/evolution.o: $(SRC)/evolution.cpp $(SRC)/evolution.hpp $(SRC)/individual.hpp $(SRC)/knapsack.hpp $(SRC)/crossover.hpp $(SRC)/mutation.hpp
 $(BUILD)/individual.o: $(SRC)/individual.cpp $(SRC)/individual.hpp $(SRC)/knapsack.hpp
 $(BUILD)/knapsack.o: $(SRC)/knapsack.cpp $(SRC)/knapsack.hpp
+$(BUILD)/mutation.o: $(SRC)/mutation.cpp $(SRC)/mutation.hpp $(SRC)/individual.hpp $(SRC)/knapsack.hpp
 $(BUILD)/random.o: $(SRC)/random.cpp $(SRC)/random.hpp
-$(BUILD)/main.o: $(SRC)/main.cpp $(SRC)/evolution.hpp $(SRC)/knapsack.hpp
+$(BUILD)/main.o: $(SRC)/main.cpp $(SRC)/evolution.hpp $(SRC)/knapsack.hpp $(SRC)/crossover.hpp $(SRC)/mutation.hpp

@@ -1,6 +1,8 @@
 #include <iostream>
 #include "knapsack.hpp"
 #include "evolution.hpp"
+#include "mutation.hpp"
+#include "crossover.hpp"
 
 using namespace std;
 
@@ -9,7 +11,9 @@ using namespace std;
 int main(int argc, char const *argv[]) {
     Knapsack k;
     cin >> k;
-    Evolution e(&k);
+    OnePointCrossover crossover;
+    InversionMutation mutation;
+    Evolution e(&k, &crossover, &mutation);
     e.run();
     return 0;
 }
