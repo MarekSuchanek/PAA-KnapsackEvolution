@@ -67,12 +67,15 @@ void Individual::repair(){
         while(!get(point % size())){
             point++;
         }
-        set(point, false);
+        set(point % size(), false);
     }
 }
 
 bool Individual::operator < (const Individual& other) const{
     return price < other.price;
+}
+bool Individual::operator == (const Individual& other) const{
+    return price == other.price;
 }
 
 Individual& Individual::operator = (const Individual& other){

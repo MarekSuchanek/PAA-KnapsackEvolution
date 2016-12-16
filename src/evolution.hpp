@@ -1,23 +1,49 @@
 #ifndef EVOLUTION_HPP
 #define EVOLUTION_HPP
 
+#include <iostream>
+
 #include "individual.hpp"
 #include "mutation.hpp"
 #include "crossover.hpp"
 
-static const int POPULATION_SIZE = 200;
-static const int TOURNAMENT_SIZE = 4;
-static const double MUTATION_P = 0.03;
-static const double CROSSOVER_P = 0.6;
-static const double INIT_P = 0.5;
-static const int MAX_GENERATIONS = 10000;
-static const int MAX_SAME_GENERATIONS = 5;
+struct EvolutionConfig{
+    int populationSize;
+    int tournamentSize;
+    double pMutation;
+    double pCrossover;
+    double pInit;
+    int maxGenerations;
+    int maxSameGenerations;
+
+    const CrossoverStrategy* cs;
+    const MutationStrategy* ms;
+
+    EvolutionConfig();
+    ~EvolutionConfig();
+
+    void loadArgs(int argc, char const *argv[]);
+
+    const CrossoverStrategy* getCrossoverStrategy() const;
+    const MutationStrategy* getMutationStrategy() const;
+
+    void print(std::ostream& os) const;
+    friend std::ostream& operator << (std::ostream& os, const EvolutionConfig& cfg);
+};
 
 class Evolution{
 private:
-    Individual** population;
-    int generation;
     const Knapsack* knapsack;
+    const EvolutionConfig& cfg;
+
+    Individual** population;
+
+    int generation;
+    int sameBest;
+    Individual* bestIndividual;
+    Individual* worstIndividual;
+    double averageFitness;
+
     const CrossoverStrategy* cs;
     const MutationStrategy* ms;
 
@@ -27,16 +53,28 @@ private:
     void selection();
     void reproduction();
     void mutation();
-    const Individual* evaluation();
+    void evaluation();
     bool termination() const;
 
     void clearPopulation();
 public:
-    Evolution(const Knapsack* knapsack, const CrossoverStrategy* cs, const MutationStrategy* ms);
+    Evolution(const Knapsack* knapsack, const EvolutionConfig& cfg);
     ~Evolution();
-    void run();
 
-    //TODO: print
+    bool isTerminated() const;
+    int getBestFitness() const;
+    int getWorstFitness() const;
+    double getAvgFitness() const;
+    const Individual* getBest() const;
+    const Individual* getWorst() const;
+
+    void run();
+    void run(std::ostream& os);
+    void step();
+
+    void print(std::ostream& os) const;
+
+    friend std::ostream& operator << (std::ostream& os, const Evolution& evo);
 };
 
 #endif /* EVOLUTION_HPP */

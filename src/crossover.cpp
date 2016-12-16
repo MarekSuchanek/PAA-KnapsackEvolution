@@ -2,6 +2,8 @@
 
 #include "random.hpp"
 
+CrossoverStrategy::~CrossoverStrategy(){}
+
 Individual* OnePointCrossover::offspringA(const Individual* parentA, const Individual* parentB) const{
     Individual* offspring = new Individual(*parentB);
     int point = Random::randInt(offspring->size());

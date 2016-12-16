@@ -4,8 +4,8 @@ BUILD=./build
 
 LD=g++
 CXX=g++
-CXXFLAGS=-Wall -pedantic -std=c++11
-TARGET=$(BIN)/knapsack
+CXXFLAGS=-Wall -pedantic -std=c++11 -g
+TARGET=$(BIN)/knapevo
 
 all: $(TARGET)
 

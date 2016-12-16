@@ -31,6 +31,7 @@ public:
     void repair();
 
     bool operator < (const Individual& other) const;
+    bool operator == (const Individual& other) const;
 
     Individual& operator = (const Individual& other);
     friend std::ostream& operator << (std::ostream& os, const Individual& ind);

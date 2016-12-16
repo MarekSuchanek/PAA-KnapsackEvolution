@@ -8,6 +8,7 @@ public:
     virtual Individual* offspringA(const Individual* parentA, const Individual* parentB) const = 0;
     virtual Individual* offspringB(const Individual* parentA, const Individual* parentB) const = 0;
     virtual void inPlace(Individual* indA, Individual* indB) const = 0;
+    virtual ~CrossoverStrategy();
 };
 
 class OnePointCrossover : public CrossoverStrategy{

@@ -7,6 +7,7 @@ class MutationStrategy{
 public:
     virtual Individual* mutant(const Individual* original) const;
     virtual void inPlace(Individual* ind) const = 0;
+    virtual ~MutationStrategy();
 };
 
 class FlipBitMutation : public MutationStrategy{
@@ -15,11 +16,6 @@ public:
 };
 
 class InversionMutation : public MutationStrategy{
-public:
-    void inPlace(Individual* ind) const;
-};
-
-class ExperimentalMutation : public MutationStrategy{
 public:
     void inPlace(Individual* ind) const;
 };
