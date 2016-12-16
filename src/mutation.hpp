@@ -19,4 +19,9 @@ public:
     void inPlace(Individual* ind) const;
 };
 
+class ExperimentalMutation : public MutationStrategy{
+public:
+    void inPlace(Individual* ind) const;
+};
+
 #endif /* MUTATION_HPP */

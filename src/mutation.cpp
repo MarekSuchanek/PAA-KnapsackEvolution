@@ -17,3 +17,11 @@ void InversionMutation::inPlace(Individual* ind) const{
         ind->neg(i);
     }
 }
+
+void ExperimentalMutation::inPlace(Individual* ind) const{
+    int point = Random::randInt(ind->size());
+    while(ind->get(point % ind->size())){
+        point++;
+    }
+    ind->neg(point % ind->size());
+}

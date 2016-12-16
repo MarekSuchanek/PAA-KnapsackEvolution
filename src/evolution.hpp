@@ -5,12 +5,12 @@
 #include "mutation.hpp"
 #include "crossover.hpp"
 
-static const int POPULATION_SIZE = 1000;
-static const int TOURNAMENT_SIZE = 10;
-static const double MUTATION_P = 0.5;
-static const double CROSSOVER_P = 0.5;
+static const int POPULATION_SIZE = 200;
+static const int TOURNAMENT_SIZE = 4;
+static const double MUTATION_P = 0.03;
+static const double CROSSOVER_P = 0.6;
 static const double INIT_P = 0.5;
-static const int MAX_GENERATIONS = 1000;
+static const int MAX_GENERATIONS = 10000;
 static const int MAX_SAME_GENERATIONS = 5;
 
 class Evolution{

@@ -12,7 +12,7 @@ int main(int argc, char const *argv[]) {
     Knapsack k;
     cin >> k;
     OnePointCrossover crossover;
-    InversionMutation mutation;
+    FlipBitMutation mutation;
     Evolution e(&k, &crossover, &mutation);
     e.run();
     return 0;
