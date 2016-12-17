@@ -9,16 +9,16 @@
 #include "crossover.hpp"
 
 EvolutionConfig::EvolutionConfig(){
-    maxGenerations = 300;
-    populationSize = 1000;
+    maxGenerations = 100;
+    populationSize = 50;
     tournamentSize = 5;
     pMutation = 0.05;
-    pCrossover = 0.8;
+    pCrossover = 0.5;
     pInit = 0.5;
     maxSameGenerations = maxGenerations;
 
     ms = new FlipBitMutation();
-    cs = new UniformCrossover();
+    cs = new OnePointCrossover();
 }
 EvolutionConfig::~EvolutionConfig(){
     delete ms;
