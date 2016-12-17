@@ -64,7 +64,7 @@ int mainAverage(int argc, char const *argv[]){
     return 0;
 }
 
-int mainOne(int argc, char const *argv[]){
+int mainGenerations(int argc, char const *argv[]){
     Knapsack knapsack;
     EvolutionConfig cfg = EvolutionConfig();
 
@@ -77,37 +77,29 @@ int mainOne(int argc, char const *argv[]){
 
     ifstream ifs_ins(argv[1]);
     ifstream ifs_sol(argv[2]);
-    clock_t timeStart, timeEnd;
-    double totalRelErr, maxErr = 0, totalTime, relErr, timeEvo;
-    int n = 0;
+    double relErrBest, relErrAvg;
 
     while(!ifs_ins.eof()) {
         knapsack.loadInstance(ifs_ins);
         knapsack.loadSolution(ifs_sol);
         if(ifs_ins.fail() || ifs_sol.fail()) break;
         Evolution evo(&knapsack, cfg);
-        timeStart = clock();
+        relErrBest = knapsack.relativeError(evo.getBestFitness());
+        relErrAvg = knapsack.relativeError(evo.getAvgFitness());
+        cout << fixed << evo.getGeneration() << " " << relErrBest << " " << relErrAvg << endl;
         while(!evo.isTerminated()){
             evo.step();
-            cout << evo.getGeneration() << " " << evo.getBestFitness() << " " << evo.getAvgFitness() << endl;
+            relErrBest = knapsack.relativeError(evo.getBestFitness());
+            relErrAvg = knapsack.relativeError(evo.getAvgFitness());
+            cout << fixed << evo.getGeneration() << " " << relErrBest << " " << relErrAvg << endl;
         }
-        timeEnd = clock();
-        totalTime += timeEvo = (timeEnd-timeStart)/(long double)CLOCKS_PER_SEC;
-        totalRelErr += relErr = knapsack.relativeError(evo.getBestFitness());
         cout << "-----------------------------------" << endl;
-        cout << fixed << knapsack.getOptimum() << " " << evo.getBestFitness() << " " << relErr << " " << timeEvo << endl;
-        cout << "-----------------------------------" << endl;
-        n++;
-        if(relErr > maxErr) maxErr = relErr;
     }
-    cout << "===========================================" << endl;
-    cout << "Summary: " << totalRelErr/n << " " << maxErr << " " << " " << totalTime/n << endl;
-    cout << "===========================================" << endl;
     ifs_ins.close();
     ifs_sol.close();
     return 0;
 }
 
 int main(int argc, char const *argv[]) {
-    return mainOne(argc, argv);
+    return mainGenerations(argc, argv);
 }
