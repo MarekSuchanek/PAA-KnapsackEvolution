@@ -40,7 +40,8 @@ int main(int argc, char const *argv[]) {
     ifstream ifs_ins(argv[1]);
     ifstream ifs_sol(argv[2]);
     clock_t timeStart, timeEnd;
-    double totalRelErr, totalTime, relErr, timeEvo;
+    double totalRelErr, maxErr = 0, totalTime, relErr, timeEvo;
+    int n = 0, optHits = 0;
 
     while(!ifs_ins.eof()) {
         knapsack.loadInstance(ifs_ins);
@@ -52,9 +53,12 @@ int main(int argc, char const *argv[]) {
         timeEnd = clock();
         totalTime += timeEvo = (timeEnd-timeStart)/(long double)CLOCKS_PER_SEC;
         totalRelErr += relErr = knapsack.relativeError(evo.getBestFitness());
-        cerr << fixed << knapsack.getOptimum() << " " << evo.getBestFitness() << " " << relErr << " " << timeEvo << endl;
+        //cerr << fixed << knapsack.getOptimum() << " " << evo.getBestFitness() << " " << relErr << " " << timeEvo << endl;
+        n++;
+        if(relErr > maxErr) maxErr = relErr;
+        if(knapsack.getOptimum() == evo.getBestFitness()) optHits++;
     }
-    cout << totalRelErr << " " << totalTime << endl;
+    cout << totalRelErr/n << " " << maxErr << " " << optHits << " " << totalTime/n << endl;
     ifs_ins.close();
     ifs_sol.close();
     return 0;
