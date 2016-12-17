@@ -26,7 +26,8 @@
 
 using namespace std;
 
-int main(int argc, char const *argv[]) {
+
+int mainAverage(int argc, char const *argv[]){
     Knapsack knapsack;
     EvolutionConfig cfg = EvolutionConfig();
 
@@ -41,7 +42,7 @@ int main(int argc, char const *argv[]) {
     ifstream ifs_sol(argv[2]);
     clock_t timeStart, timeEnd;
     double totalRelErr, maxErr = 0, totalTime, relErr, timeEvo;
-    int n = 0, optHits = 0;
+    int n = 0;
 
     while(!ifs_ins.eof()) {
         knapsack.loadInstance(ifs_ins);
@@ -56,10 +57,57 @@ int main(int argc, char const *argv[]) {
         //cerr << fixed << knapsack.getOptimum() << " " << evo.getBestFitness() << " " << relErr << " " << timeEvo << endl;
         n++;
         if(relErr > maxErr) maxErr = relErr;
-        if(knapsack.getOptimum() == evo.getBestFitness()) optHits++;
     }
-    cout << totalRelErr/n << " " << maxErr << " " << optHits << " " << totalTime/n << endl;
+    cout << totalRelErr/n << " " << maxErr << " " << totalTime/n << endl;
     ifs_ins.close();
     ifs_sol.close();
     return 0;
+}
+
+int mainOne(int argc, char const *argv[]){
+    Knapsack knapsack;
+    EvolutionConfig cfg = EvolutionConfig();
+
+    if(argc < 3){
+        cerr << argv[0] << "<instance_file> <solution_file> [opts]" << endl;
+        return 1;
+    }
+    cfg.loadArgs(argc, argv);
+    cerr << cfg << endl;
+
+    ifstream ifs_ins(argv[1]);
+    ifstream ifs_sol(argv[2]);
+    clock_t timeStart, timeEnd;
+    double totalRelErr, maxErr = 0, totalTime, relErr, timeEvo;
+    int n = 0;
+
+    while(!ifs_ins.eof()) {
+        knapsack.loadInstance(ifs_ins);
+        knapsack.loadSolution(ifs_sol);
+        if(ifs_ins.fail() || ifs_sol.fail()) break;
+        Evolution evo(&knapsack, cfg);
+        timeStart = clock();
+        while(!evo.isTerminated()){
+            evo.step();
+            cout << evo.getGeneration() << " " << evo.getBestFitness() << " " << evo.getAvgFitness() << endl;
+        }
+        timeEnd = clock();
+        totalTime += timeEvo = (timeEnd-timeStart)/(long double)CLOCKS_PER_SEC;
+        totalRelErr += relErr = knapsack.relativeError(evo.getBestFitness());
+        cout << "-----------------------------------" << endl;
+        cout << fixed << knapsack.getOptimum() << " " << evo.getBestFitness() << " " << relErr << " " << timeEvo << endl;
+        cout << "-----------------------------------" << endl;
+        n++;
+        if(relErr > maxErr) maxErr = relErr;
+    }
+    cout << "===========================================" << endl;
+    cout << "Summary: " << totalRelErr/n << " " << maxErr << " " << " " << totalTime/n << endl;
+    cout << "===========================================" << endl;
+    ifs_ins.close();
+    ifs_sol.close();
+    return 0;
+}
+
+int main(int argc, char const *argv[]) {
+    return mainOne(argc, argv);
 }

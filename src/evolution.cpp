@@ -9,16 +9,16 @@
 #include "crossover.hpp"
 
 EvolutionConfig::EvolutionConfig(){
-    maxGenerations = 100;
-    populationSize = 50;
+    maxGenerations = 300;
+    populationSize = 1000;
     tournamentSize = 5;
     pMutation = 0.05;
-    pCrossover = 0.5;
+    pCrossover = 0.8;
     pInit = 0.5;
     maxSameGenerations = maxGenerations;
 
     ms = new FlipBitMutation();
-    cs = new OnePointCrossover();
+    cs = new UniformCrossover();
 }
 EvolutionConfig::~EvolutionConfig(){
     delete ms;
@@ -179,6 +179,9 @@ void Evolution::evaluation(){
     }
     averageFitness = sum  / (double)cfg.populationSize;
     sameBest = (*bestIndividual == *population[best] ? sameBest + 1 : 0);
+    if(*population[best] < *bestIndividual){ //survival of the strongest individual
+        *population[Random::randInt(cfg.populationSize, 0)] = *bestIndividual;
+    }
     *bestIndividual = *population[best];
     *worstIndividual = *population[worst];
 }
@@ -218,6 +221,9 @@ void Evolution::run(){
 
 bool Evolution::isTerminated() const{
     return termination();
+}
+int Evolution::getGeneration() const{
+    return generation;
 }
 int Evolution::getBestFitness() const{
     return getBest()->getFitness();

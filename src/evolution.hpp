@@ -62,6 +62,7 @@ public:
     ~Evolution();
 
     bool isTerminated() const;
+    int getGeneration() const;
     int getBestFitness() const;
     int getWorstFitness() const;
     double getAvgFitness() const;
