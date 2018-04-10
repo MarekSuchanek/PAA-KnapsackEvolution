@@ -9,6 +9,9 @@ TARGET=$(BIN)/knapevo
 
 all: $(TARGET)
 
+run: $(TARGET)
+	./$(TARGET) ${ARGS}
+
 $(TARGET): $(BUILD)/main.o $(BUILD)/evolution.o $(BUILD)/individual.o $(BUILD)/knapsack.o $(BUILD)/random.o $(BUILD)/crossover.o $(BUILD)/mutation.o
 	mkdir -p $(BIN)
 	$(LD) -o $@ $(BUILD)/main.o $(BUILD)/evolution.o $(BUILD)/individual.o $(BUILD)/knapsack.o $(BUILD)/random.o $(BUILD)/crossover.o $(BUILD)/mutation.o

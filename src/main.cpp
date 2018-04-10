@@ -32,7 +32,7 @@ int mainAverage(int argc, char const *argv[]){
     EvolutionConfig cfg = EvolutionConfig();
 
     if(argc < 3){
-        cerr << argv[0] << "<instance_file> <solution_file> [opts]" << endl;
+        cerr << argv[0] << " <instance_file> <solution_file> [opts]" << endl;
         return 1;
     }
     cfg.loadArgs(argc, argv);
