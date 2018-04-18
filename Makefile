@@ -7,14 +7,16 @@ CXX=g++
 CXXFLAGS=-Wall -pedantic -std=c++11 -g
 TARGET=$(BIN)/knapevo
 
+OBJS=$(BUILD)/main.o $(BUILD)/evolution.o $(BUILD)/individual.o $(BUILD)/knapsack.o $(BUILD)/random.o $(BUILD)/crossover.o $(BUILD)/mutation.o
+
 all: $(TARGET)
 
 run: $(TARGET)
 	./$(TARGET) ${ARGS}
 
-$(TARGET): $(BUILD)/main.o $(BUILD)/evolution.o $(BUILD)/individual.o $(BUILD)/knapsack.o $(BUILD)/random.o $(BUILD)/crossover.o $(BUILD)/mutation.o
+$(TARGET): $(OBJS)
 	mkdir -p $(BIN)
-	$(LD) -o $@ $(BUILD)/main.o $(BUILD)/evolution.o $(BUILD)/individual.o $(BUILD)/knapsack.o $(BUILD)/random.o $(BUILD)/crossover.o $(BUILD)/mutation.o
+	$(LD) -o $@ $(OBJS)
 
 $(BUILD)/%o: $(SRC)/%cpp
 	mkdir -p $(BUILD)
