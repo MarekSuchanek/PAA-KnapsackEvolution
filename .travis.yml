@@ -1,11 +1,6 @@
-#travis configuration for coverage testing
-language: c
-
-# Compiler selection
+language: cpp
 compiler:
   - g++
-
-# Build steps
 script:
   - make
   - make run ARGS="problems/knap_10.dat problems/knap_10.sol.dat"
