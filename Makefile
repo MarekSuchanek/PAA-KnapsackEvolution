@@ -35,7 +35,7 @@ $(BUILD)/%o: $(SRC)/%cpp
 	mkdir -p $(BUILD)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-#=== DEPENDECINSIES (one.o -> one.cpp + multiple.hpp)
+#=== DEPENDENCISIES (one.o -> one.cpp + multiple.hpp)
 $(BUILD)/crossover.o: $(SRC)/crossover.cpp $(SRC)/crossover.hpp $(SRC)/individual.hpp $(SRC)/knapsack.hpp
 $(BUILD)/evolution.o: $(SRC)/evolution.cpp $(SRC)/evolution.hpp $(SRC)/individual.hpp $(SRC)/knapsack.hpp $(SRC)/crossover.hpp $(SRC)/mutation.hpp
 $(BUILD)/individual.o: $(SRC)/individual.cpp $(SRC)/individual.hpp $(SRC)/knapsack.hpp
